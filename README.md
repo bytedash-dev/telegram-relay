@@ -223,7 +223,10 @@ The TDLib [`inputFileLocal`](https://core.telegram.org/tdlib/docs/classtd_1_1td_
 				<tr>
 					<td>originalFileName</td>
 					<td>string</td>
-					<td>The original file name of the uploaded file. <strong>Telegram Relay</strong> renames the uploaded file on the server.</td>
+					<td>
+						The original file name of the uploaded file.<br/>
+						<strong>Telegram Relay</strong> renames the uploaded file on the server.
+					</td>
 				</tr>
 				<tr>
 					<td>uploadedFilePath</td>
