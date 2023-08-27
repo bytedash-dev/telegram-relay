@@ -137,7 +137,7 @@ connection.on("ClientReceive", async data => {
 });
 ```
 
-A few of the [fields](https://core.telegram.org/tdlib/docs/classtd_1_1td__api_1_1tdlib_parameters.html) indicated in this API, do not need to be supplied because **Telegram Relay** will be furnishing them. Even if supplied, **Telegram Relay** will overwrite them. The fields that should be omitted are:
+A few of the [fields](https://core.telegram.org/tdlib/docs/classtd_1_1td__api_1_1tdlib_parameters.html) indicated in this API do not need to be supplied because **Telegram Relay** will be furnishing them. Even if supplied, **Telegram Relay** will overwrite them. The fields that should be omitted are:
 
  1. system_version
  2. device_model
@@ -198,7 +198,7 @@ The TDLib [`inputFileLocal`](https://core.telegram.org/tdlib/docs/classtd_1_1td_
 				</tr>
 				<tr>
 					<td>uploadedFiles</td>
-					<td>Array&lt;UploadedFile&gt;</td>
+					<td>Array&lt;<a href="#uploadedfile"><code>UploadedFile</code></a>&gt;</td>
 					<td>The list of files that are successfully uploaded.</td>
 				</tr>
 				<tr>
