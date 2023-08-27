@@ -38,9 +38,9 @@ Once connected to the Hub, we will need to initialise the connection for **Teleg
 The `Init` API accepts a single param `accountName` of type `string`.
 ```javascript
 const accountName = "+60123456789";
-await connection.send("Init", accountName);
+await connection.invoke("Init", accountName);
 ```
-The `accountName` can be any ASCII characters that can uniquely identify the Telegram accounts used in **Telegram Relay**. It can be a Telegram account phone number, email address or user's name. After the authentication with TDLib using this `accountName` is successful, subsequent initialisation with the same `accountName` doesn't require authentication anymore and the Telegram account is ready to be accessed.
+The `accountName` is the assigned Account Name that can uniquely identify the Telegram accounts used in **Telegram Relay** and can be any ASCII characters. It can be a Telegram account phone number, email address or user's name. After the authentication with TDLib using this `accountName` is successful, subsequent initialisation with the same `accountName` doesn't require authentication anymore and the Telegram account is ready to be accessed.
 
 ### TDLib "td_send" API
 This is the **Telegram Relay** SignalR API which is equivalent to TDLib's **td_send** API outlined in [JSON interface of TDLib](https://core.telegram.org/tdlib/docs/td__json__client_8h.html). We will be using this to send request to TDLib _asynchronously_ and most often be using this API to interact with TDLib.
@@ -153,7 +153,7 @@ The TDLib [`inputFileLocal`](https://core.telegram.org/tdlib/docs/classtd_1_1td_
 <table>
 	<tr>
 		<th>URL</th>
-		<td>https://[host_name]/Upload/Files</td>
+		<td>https://[host_name]/api/Upload/Files</td>
 	</tr>
 	<tr>
 		<th>Verb</th>
@@ -179,7 +179,7 @@ The TDLib [`inputFileLocal`](https://core.telegram.org/tdlib/docs/classtd_1_1td_
 	<tr>
 		<th>Returned Result</th>
 		<td>
-			A HTTP Status Code of <code>201 Created</code> and JSON string with the following data structure is returned:
+			HTTP Status Code of <code>201 Created</code> and JSON string with the following data structure is returned:
 			<table>
 				<tr>
 					<th>Field Name</th>
@@ -305,6 +305,30 @@ const payload2 = {
 const data2 = JSON.stringify(payload2);
 await connection.send("Send", data2);
 ```
+
+### Delete account
+**Telegram Relay** provides a REST API to delete an existing account from the server. This doesn't delete the Telegram account itself, but only removes its authentication data and temporary files from **Telegram Relay** server. The account **MUST** not be in use. Upon successful call, subsequent connection and initialisation to the same Account Name will require the Account to be authenticated again.
+
+<table>
+	<tr>
+		<th>URL</th>
+		<td>
+			https://[host_name]/api/Telegram/RemoveAccount/<strong>{accountName}</strong><br />
+			<strong>accountName</strong> is the Account Name used during <a href="#initialise-the-connection">Initialisation</a>.
+		</td>
+	</tr>
+	<tr>
+		<th>Verb</th>
+		<td>DELETE</td>
+	</tr>
+	<tr>
+		<th>Returned Result</th>
+		<td>
+			HTTP Status Code of <code>204 No Content</code> on success <em>OR</em><br />
+			HTTP Status Code of <code>400 Bad Request</code> if the Account is in use.
+		</td>
+	</tr>
+</table>
 
 ## Important Notes
 
