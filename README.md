@@ -18,14 +18,14 @@ The **Telegram Relay** Client API is very easy to implement and has only a handf
 First and foremost, we will be connecting to the SignalR Hub using the SignalR JavaScript Client. Connect to the SignalR Hub via the url `https://[host_name]/signalr-telegram`.
 ```javascript
 const connection = new window.signalR.HubConnectionBuilder()
-    .withUrl("https://telegram.bytedash.com.my/signalr-telegram")
-    .configureLogging(signalR.LogLevel.Information)
-    .withAutomaticReconnect({
-        nextRetryDelayInMilliseconds: retryContext => {
-            return 5 * 1000; // attempt to retry every 5 seconds until successful
-        }
-    })
-    .build();
+	.withUrl("https://telegram.bytedash.com.my/signalr-telegram")
+	.configureLogging(signalR.LogLevel.Information)
+	.withAutomaticReconnect({
+		nextRetryDelayInMilliseconds: retryContext => {
+			return 5 * 1000; // attempt to retry every 5 seconds until successful
+		}
+	})
+	.build();
 
 await connection.start(); // connect to the Hub
 ```
@@ -50,12 +50,12 @@ The `Send` API accepts a single param `data` of type `string` which is a JSON se
 The example below shows how the TDLib's [`getChatHistory`](https://core.telegram.org/tdlib/docs/classtd_1_1td__api_1_1get_chat_history.html) is consumed.
 ```javascript
 const payload = {
-    "@type": "getChatHistory",
-    "@extra": null,
-    "chat_id": 123456789,
-    "offset": 0,
-    "limit": 10,
-    "only_local": false
+	"@type": "getChatHistory",
+	"@extra": null,
+	"chat_id": 123456789,
+	"offset": 0,
+	"limit": 10,
+	"only_local": false
 };
 
 const data = JSON.stringify(payload);
@@ -71,9 +71,9 @@ This is the **Telegram Relay** SignalR API which is equivalent to TDLib's **td_e
 The example below shows how the TDLib's [`getFileMimeType`](https://core.telegram.org/tdlib/docs/classtd_1_1td__api_1_1get_file_mime_type.html) is consumed.
 ```javascript
 const payload = {
-    "@type": "getFileMime",
-    "@extra": null,
-    "file_name": "Telegram/uploads/cats.mp4"
+	"@type": "getFileMime",
+	"@extra": null,
+	"file_name": "Telegram/uploads/cats.mp4"
 };
 
 const data = JSON.stringify(payload);
@@ -90,13 +90,13 @@ The `ClientReceive` API accepts a single param `data` of type `string` which is 
 ```javascript
 connection.on("ClientReceive", async data => {
 var result = JSON.parse(data);
-    switch (result["@type"]) {
-        case "updateAuthorizationState":
-            break;
-
-        case "updateNewChat":
-            break;
-    }
+	switch (result["@type"]) {
+		case "updateAuthorizationState":
+		break;
+	
+		case "updateNewChat":
+		break;
+	}
 });
 ```
 
@@ -258,9 +258,9 @@ The example below shows how to send the two uploaded files above as photos in tw
 ```javascript
 // first photo
 const payload1 = {
-    "@type": "sendMessage",
-    "@extra": null,
-    "chat_id": 123456789,
+	"@type": "sendMessage",
+	"@extra": null,
+	"chat_id": 123456789,
 	"input_message_content": {
 		"@type": "inputMessagePhoto",
 		"@extra": null,
@@ -285,9 +285,9 @@ await connection.send("Send", data1);
 
 // second photo
 const payload2 = {
-    "@type": "sendMessage",
-    "@extra": null,
-    "chat_id": 123456789,
+	"@type": "sendMessage",
+	"@extra": null,
+	"chat_id": 123456789,
 	"input_message_content": {
 		"@type": "inputMessagePhoto",
 		"@extra": null,
@@ -337,9 +337,9 @@ For performance reasons, the field `@type` **MUST** appear before any other fiel
 This applies only to the main API and not the nested ones. Consider this example.
 ```javascript
 const payload = {
-    "@type": "sendMessage",
-    "@extra": null,
-    "chat_id": 123456789,
+	"@type": "sendMessage",
+	"@extra": null,
+	"chat_id": 123456789,
 	"input_message_content": {
 		"@extra": null,
 		"width": 500,
