@@ -179,7 +179,7 @@ The TDLib [`inputFileLocal`](https://core.telegram.org/tdlib/docs/classtd_1_1td_
 	<tr>
 		<th>Returned Result</th>
 		<td>
-			A JSON string with the following data structure is returned:
+			A HTTP Status Code of <code>201 Created</code> and JSON string with the following data structure is returned:
 			<table>
 				<tr>
 					<th>Field Name</th>
