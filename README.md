@@ -1,6 +1,3 @@
-
-
-
 # Telegram Relay
 
 **Telegram Relay** is a [SignalR](https://dotnet.microsoft.com/en-us/apps/aspnet/signalr) [Hub](https://learn.microsoft.com/en-us/aspnet/core/signalr/hubs) that is able to relay [Telegram](https://telegram.org/) Database Library ([TDLib](https://core.telegram.org/tdlib)) API to-and-fro the Telegram Server. This eliminates the needs to dabble in the intricacies of building the binaries and hooking it up. **Telegram Relay** is doing all the heavy lifting to integrate with TDLib while providing an easy to use interface for clients to connect with. Clients will be connecting with **Telegram Relay** mostly with SignalR and also REST at a minimal capacity. **Telegram Relay** will then be interacting with TDLib via the [JSON interface](https://core.telegram.org/tdlib/docs/td__json__client_8h.html). As such, clients will be sending/receiving data/payloads to/from **Telegram Relay** in JSON string.
@@ -246,9 +243,9 @@ The TDLib [`inputFileLocal`](https://core.telegram.org/tdlib/docs/classtd_1_1td_
 ##### Example
 The following is an example of uploading two files using the API above with [Postman](https://www.postman.com/):
 
-![image](https://github.com/bytedash-dev/telegram-relay/assets/143246263/7359201b-5106-47b0-959b-3f87793beffc)
+![image](https://github.com/bytedash-dev/telegram-relay/assets/143246263/ed55ca80-efa4-40c1-979b-d782a1f10aed)
 
-![image](https://github.com/bytedash-dev/telegram-relay/assets/143246263/75bc8048-651d-47e6-9545-d0db155a5480)
+![image](https://github.com/bytedash-dev/telegram-relay/assets/143246263/70b67b54-feb2-42b8-8343-9e9c6493e1da)
 
 #### Send files as messages
 After uploading the files to **Telegram Relay** server, we can then proceed to call the relevant TDLib API to act upon those files.
