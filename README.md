@@ -282,6 +282,7 @@ const payload1 = {
 const data1 = JSON.stringify(payload1);
 await connection.send("Send", data1);
 
+
 // second photo
 const payload2 = {
     "@type": "sendMessage",
@@ -304,3 +305,62 @@ const payload2 = {
 const data2 = JSON.stringify(payload2);
 await connection.send("Send", data2);
 ```
+
+## Important Notes
+
+### TDLib APIs are case-sensitive
+As such the JSON-serialised string sent must be case-sensitive as well.
+
+### JSON-serialised string MUST not contain whitespaces.
+Although whitespaces are allowed in JSON string such as
+```javascript
+{ "@type": "exampleType", "name": "hello world" }
+```
+
+For performance reasons, the JSON string sent to **Telegram Relay** Hub **MUST** not contain whitespaces.
+```javascript
+{"@type":"exampleType","name":"hello world"}
+```
+All JSON serialiser library should be able to cater for this by default.
+
+### JSON-serialised string for TDLib APIs MUST start with `@type`
+Although fields order/sequence doesn't matter in JSON such as
+```javascript
+{"name":"hello world","@type":"exampleType","description":"This is a description"}
+```
+
+For performance reasons, the field `@type` **MUST** appear before any other fields. The order of other fields don't matter.
+```javascript
+{"@type":"exampleType","name":"hello world","description":"This is a description"}
+```
+
+This applies only to the main API and not the nested ones. Consider this example.
+```javascript
+const payload = {
+    "@type": "sendMessage",
+    "@extra": null,
+    "chat_id": 123456789,
+	"input_message_content": {
+		"@extra": null,
+		"width": 500,
+		"height": 300,
+		"@type": "inputMessagePhoto",
+		"caption": {
+			"@extra": null,
+			"text": "You can send a caption along with the Photo or just pass 'null' if you do not want a caption."
+			"@type": "formattedText",
+		},
+		"photo": {
+			"@extra": null,
+			"path": "iwdruscu.jpg" // this is the fileId of the UploadedFile
+			"@type": "inputFileLocal",
+		}
+	}
+};
+```
+Only the `@type` of `sendMessage` must be at the top, other `@type`s of nested objects are not required to be bound by this requirement.
+
+The JSON serialiser library must be configured to account for this requirement.
+
+### Downloaded/Uploaded files are temporary
+The files downloaded/uploaded using TDLib APIs are valid and accessible only during the same connection to the **Telegram Relay** SignalR Hub. Once disconnected, those files are purged. The files are no longer accessible to subsequent sesions of the same Telegram Account and has to be re-downloaded again. In order to prevent that, our application has to keep a cache to survive re-connection.
