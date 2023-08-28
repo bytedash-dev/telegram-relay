@@ -90,7 +90,7 @@ The `ClientReceive` API accepts a single param `data` of type `string` which is 
 
 ```javascript
 connection.on("ClientReceive", async data => {
-var result = JSON.parse(data);
+	var result = JSON.parse(data);
 	switch (result["@type"]) {
 		case "updateAuthorizationState":
 		break;
