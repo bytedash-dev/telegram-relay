@@ -40,7 +40,8 @@ The `Init` API accepts a single param `accountName` of type `string`.
 const accountName = "+60123456789";
 await connection.invoke("Init", accountName);
 ```
-The `accountName` is the assigned Account Name that can uniquely identify the Telegram accounts used in **Telegram Relay** and can be any ASCII characters. It can be a Telegram account phone number, email address or user's name. After the authentication with TDLib using this `accountName` is successful, subsequent initialisation with the same `accountName` doesn't require authentication anymore and the Telegram account is ready to be accessed.
+The `accountName` is the assigned Account Name that can uniquely identify the Telegram accounts used in **Telegram Relay** and can be any ASCII characters. It can be a Telegram account phone number, email address or user's name. After the authentication with TDLib using this `accountName` is successful, subsequent initialisation with the same `accountName` doesn't require authentication anymore and the Telegram account is ready to be accessed.  
+**Note:** The following characters will be removed from the `accountName`: `;`, `/`, `\`, `?`, `:`, `"`, `@`, `&`, `*`, `=`, `+`, `$`, `,`, `<`, `>`, `|`, `[space]`.
 
 ### TDLib "td_send" API
 This is the **Telegram Relay** SignalR API which is equivalent to TDLib's **td_send** API outlined in [JSON interface of TDLib](https://core.telegram.org/tdlib/docs/td__json__client_8h.html). We will be using this to send request to TDLib _asynchronously_ and most often be using this API to interact with TDLib.
@@ -152,8 +153,8 @@ The TDLib [`inputFileLocal`](https://core.telegram.org/tdlib/docs/classtd_1_1td_
 
 <table>
 	<tr>
-		<th>URL</th>
-		<td>https://[host_name]/api/Upload/Files</td>
+		<th>Endpoint</th>
+		<td><a name="uploadfiles-endpoint">https://[host_name]/api/Telegram/UploadFiles</a></td>
 	</tr>
 	<tr>
 		<th>Verb</th>
@@ -162,8 +163,8 @@ The TDLib [`inputFileLocal`](https://core.telegram.org/tdlib/docs/classtd_1_1td_
 	<tr>
 		<th>Headers</th>
 		<td>
-			<b>X-Connection-Id</b><br />
-			The <a href="https://learn.microsoft.com/en-us/javascript/api/%40microsoft/signalr/hubconnection#@microsoft-signalr-hubconnection-connectionid"><code>connectionId</code></a> of SignalR Client's <a href="https://learn.microsoft.com/en-us/javascript/api/@microsoft/signalr/hubconnection"><code>HubConnection</code></a> (must be connected to a Hub in order to retrieve this).
+			<a name="x-connection-id"><b>X-Connection-Id</b></a><br />
+			The <a href="https://learn.microsoft.com/en-us/javascript/api/%40microsoft/signalr/hubconnection#@microsoft-signalr-hubconnection-connectionid"><code>connectionId</code></a> of SignalR Client's <a href="https://learn.microsoft.com/en-us/javascript/api/@microsoft/signalr/hubconnection"><code>HubConnection</code></a> (must be connected to the SignalR Hub in order to retrieve this).
 			<br /><br />
 			<b>Content-Type</b><br />
 			<code>multipart/form-data;boundary=[some_value]</code><br />
@@ -179,7 +180,8 @@ The TDLib [`inputFileLocal`](https://core.telegram.org/tdlib/docs/classtd_1_1td_
 	<tr>
 		<th>Returned Result</th>
 		<td>
-			HTTP Status Code of <code>201 Created</code> and JSON string with the following data structure is returned:
+			HTTP Status Code <code>400 Bad Request</code> when the <a href="#x-connection-id"><code>X-Connection-Id</code></a> provided is invalid (not connected to the SignalR Hub).<br />
+			HTTP Status Code <code>201 Created</code> and JSON string with the following data structure is returned on success:
 			<table>
 				<tr>
 					<th>Field Name</th>
@@ -216,7 +218,7 @@ The TDLib [`inputFileLocal`](https://core.telegram.org/tdlib/docs/classtd_1_1td_
 					<th>Description</th>
 				</tr>
 				<tr>
-					<td><a name="uploadedfile_fileid">fileId</a></td>
+					<td><a name="uploadedfile-fileid">fileId</a></td>
 					<td>string</td>
 					<td>The ID of the uploaded file. Use this in TDLib APIs to refer to this uploaded file.</td>
 				</tr>
@@ -244,15 +246,17 @@ The TDLib [`inputFileLocal`](https://core.telegram.org/tdlib/docs/classtd_1_1td_
 </table>
 
 ##### Example
-The following is an example of uploading two files using the API above with [Postman](https://www.postman.com/):
+The following is an example of uploading two files using the API above with [Postman](https://www.postman.com/):  
+**Note:** The API endpoint used in the example below is not the latest. Please refer to the specification [above](#uploadfiles-endpoint).
 
 ![image](https://github.com/bytedash-dev/telegram-relay/assets/143246263/ed55ca80-efa4-40c1-979b-d782a1f10aed)
 
 ![image](https://github.com/bytedash-dev/telegram-relay/assets/143246263/70b67b54-feb2-42b8-8343-9e9c6493e1da)
 
 #### Send files as messages
+
 After uploading the files to **Telegram Relay** server, we can then proceed to call the relevant TDLib API to act upon those files.
-We can refer to the uploaded file using the [`fileId`](#uploadedfile_fileid) of the [`UploadedFile`](#uploadedfile).
+We can refer to the uploaded file using the [`fileId`](#uploadedfile-fileid) of the [`UploadedFile`](#uploadedfile).
 
 The example below shows how to send the two uploaded files above as photos in two separate Telegram messages using the [`sendMessage`](https://core.telegram.org/tdlib/docs/classtd_1_1td__api_1_1send_message.html) API.
 ```javascript
@@ -311,9 +315,9 @@ await connection.send("Send", data2);
 
 <table>
 	<tr>
-		<th>URL</th>
+		<th>Endpoint</th>
 		<td>
-			https://[host_name]/api/Telegram/RemoveAccount/<strong>{accountName}</strong><br />
+			https://[host_name]/api/Telegram/RemoveAccount/<strong>{accountName}</strong><br /><br />
 			<strong>accountName</strong> is the Account Name used during <a href="#initialise-the-connection">Initialisation</a>.
 		</td>
 	</tr>
@@ -324,8 +328,8 @@ await connection.send("Send", data2);
 	<tr>
 		<th>Returned Result</th>
 		<td>
-			HTTP Status Code of <code>204 No Content</code> on success <em>OR</em><br />
-			HTTP Status Code of <code>400 Bad Request</code> if the Account is in use.
+			HTTP Status Code <code>400 Bad Request</code> if the Account is in use.<br />
+			HTTP Status Code <code>204 No Content</code> on success.
 		</td>
 	</tr>
 </table>
@@ -387,4 +391,4 @@ Only the `@type` of `sendMessage` must be at the top, other `@type`s of nested o
 The JSON serialiser library must be configured to account for this requirement.
 
 ### Downloaded/Uploaded files are temporary
-The files downloaded/uploaded using TDLib APIs are valid and accessible only during the same connection to the **Telegram Relay** SignalR Hub. Once disconnected, those files are purged. The files are no longer accessible to subsequent sesions of the same Telegram Account and has to be re-downloaded again. In order to prevent that, our application has to keep a cache to survive re-connection.
+The files downloaded/uploaded using TDLib and REST APIs are valid and accessible only during the same connection to the **Telegram Relay** SignalR Hub. Once disconnected, those files are purged. The files are no longer accessible to subsequent sessions of the same Telegram Account and has to be re-downloaded again. In order to prevent that, the application that we build has to keep a cache to survive re-connection.
