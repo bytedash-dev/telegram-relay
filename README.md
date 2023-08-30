@@ -533,25 +533,25 @@ For performance reasons, the field `@type` **MUST** appear before any other fiel
 This applies only to the main API and not the nested ones. Consider this example.
 ```javascript
 const payload = {
-	"@type": "sendMessage",
-	"@extra": null,
-	"chat_id": 123456789,
-	"input_message_content": {
-		"@extra": null,
-		"width": 500,
-		"height": 300,
-		"@type": "inputMessagePhoto",
-		"caption": {
-			"@extra": null,
-			"text": "You can send a caption along with the Photo or just pass 'null' if you do not want a caption."
-			"@type": "formattedText",
-		},
-		"photo": {
-			"@extra": null,
-			"path": "iwdruscu.jpg" // this is the fileId of the UploadedFile
-			"@type": "inputFileLocal",
-		}
-	}
+    "@type": "sendMessage",
+    "@extra": null,
+    "chat_id": 123456789,
+    "input_message_content": {
+        "@extra": null,
+        "width": 500,
+        "height": 300,
+        "@type": "inputMessagePhoto",
+        "caption": {
+            "@extra": null,
+            "text": "You can send a caption along with the Photo or just pass 'null' if you do not want a caption."
+            "@type": "formattedText",
+        },
+        "photo": {
+            "@extra": null,
+            "path": "iwdruscu.jpg" // this is the fileId of the UploadedFile
+            "@type": "inputFileLocal",
+        }
+    }
 };
 ```
 Only the `@type` of `sendMessage` must be at the top, other `@type`s of nested objects are not required to be bound by this requirement.
