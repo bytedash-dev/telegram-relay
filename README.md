@@ -373,7 +373,7 @@ connection.on("ClientReceive", async data => {
                                 "application_version": "1.0.0"
                             };
                             
-                               const data = JSON.stringify(payload);
+                            const data = JSON.stringify(payload);
                             await connection.send("Send", data);
                         }
                         break;
