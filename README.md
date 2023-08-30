@@ -11,7 +11,7 @@ The **Telegram Relay** Client API is very easy to implement and has only a handf
 ### Prerequisite
 
  1. You will need knowledge in ASP.NET Core SignalR Client API in order to be connected to the **Telegram Relay** SignalR Hub (Server). There are several [clients](https://learn.microsoft.com/en-us/aspnet/core/signalr/client-features) available but we will be using the [JavaScript client](https://learn.microsoft.com/en-us/aspnet/core/signalr/javascript-client) in the examples in this document. In order to follow the examples, set up the client first.
- 2. You will need to apply for the Telegram's API access from [https://my.telegram.org/](https://my.telegram.org/).
+ 2. You will need to apply for the Telegram's API access from [https://my.telegram.org/](https://my.telegram.org/). Demo APIId: `94575`, Demo ApiHash: `a3406de8d171bb422bb6ddf3bbd800e2`.
  3. You will need to understand the concepts used in TDLib. The [Getting Started Guide](https://core.telegram.org/tdlib/getting-started) is an excellent place for that. It is important to understand what does it mean by sending a request `synchronously` and `asynchronously`.
 
 ### Connecting to the SignalR Hub
