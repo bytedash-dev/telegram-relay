@@ -469,14 +469,14 @@ connection.on("ClientReceive", async data => {
         case "updateNewMessage": // Flow Step #09
             {
                 // Here is where you will receive messages.
-                // Here will be called twice. The first one for the message that you sent out (outgoing message).
-                // The second time is when the other Telegram account sends you a message (incoming message).
                 
                 console.log("Receiving text message.");
                 
                 const message = result.message;
                 
                 if (message["chat_id"] == chatId) { // only interested in the messages of the chatId we saved.
+                    // Here will be called twice. The first one for the message that you sent out (outgoing message).
+                    // The second time is when the other Telegram account sends you a message (incoming message).
                     console.log(message);
                 }
             }
