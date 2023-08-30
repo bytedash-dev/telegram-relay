@@ -11,21 +11,23 @@ The **Telegram Relay** Client API is very easy to implement and has only a handf
 ### Prerequisite
 
  1. You will need knowledge in ASP.NET Core SignalR Client API in order to be connected to the **Telegram Relay** SignalR Hub (Server). There are several [clients](https://learn.microsoft.com/en-us/aspnet/core/signalr/client-features) available but we will be using the [JavaScript client](https://learn.microsoft.com/en-us/aspnet/core/signalr/javascript-client) in the examples in this document. In order to follow the examples, set up the client first.
- 2. You will need to apply for the Telegram's API access from [https://my.telegram.org/](https://my.telegram.org/). Demo APIId: `94575`, Demo ApiHash: `a3406de8d171bb422bb6ddf3bbd800e2`.
+ 2. You will need to apply for the Telegram's API access from [https://my.telegram.org/](https://my.telegram.org/).  
+	&nbsp;&nbsp;&nbsp;&nbsp; Demo APIId: `94575`  
+	&nbsp;&nbsp;&nbsp;&nbsp; Demo ApiHash: `a3406de8d171bb422bb6ddf3bbd800e2`
  3. You will need to understand the concepts used in TDLib. The [Getting Started Guide](https://core.telegram.org/tdlib/getting-started) is an excellent place for that. It is important to understand what does it mean by sending a request `synchronously` and `asynchronously`.
 
 ### Connecting to the SignalR Hub
 First and foremost, we will be connecting to the SignalR Hub using the SignalR JavaScript Client. Connect to the SignalR Hub via the url `https://[host_name]/signalr-telegram`.
 ```javascript
 const connection = new window.signalR.HubConnectionBuilder()
-	.withUrl("https://telegram.bytedash.com.my/signalr-telegram")
-	.configureLogging(signalR.LogLevel.Information)
-	.withAutomaticReconnect({
-		nextRetryDelayInMilliseconds: retryContext => {
-			return 5 * 1000; // attempt to retry every 5 seconds until successful
-		}
-	})
-	.build();
+    .withUrl("https://telegram.bytedash.com.my/signalr-telegram")
+    .configureLogging(signalR.LogLevel.Information)
+    .withAutomaticReconnect({
+        nextRetryDelayInMilliseconds: retryContext => {
+            return 5 * 1000; // attempt to retry every 5 seconds until successful
+        }
+    })
+    .build();
 
 await connection.start(); // connect to the Hub
 ```
@@ -51,12 +53,12 @@ The `Send` API accepts a single param `data` of type `string` which is a JSON se
 The example below shows how the TDLib's [`getChatHistory`](https://core.telegram.org/tdlib/docs/classtd_1_1td__api_1_1get_chat_history.html) is consumed.
 ```javascript
 const payload = {
-	"@type": "getChatHistory",
-	"@extra": null,
-	"chat_id": 123456789,
-	"offset": 0,
-	"limit": 10,
-	"only_local": false
+    "@type": "getChatHistory",
+    "@extra": null,
+    "chat_id": 123456789,
+    "offset": 0,
+    "limit": 10,
+    "only_local": false
 };
 
 const data = JSON.stringify(payload);
@@ -72,9 +74,9 @@ This is the **Telegram Relay** SignalR API which is equivalent to TDLib's **td_e
 The example below shows how the TDLib's [`getFileMimeType`](https://core.telegram.org/tdlib/docs/classtd_1_1td__api_1_1get_file_mime_type.html) is consumed.
 ```javascript
 const payload = {
-	"@type": "getFileMime",
-	"@extra": null,
-	"file_name": "Telegram/uploads/cats.mp4"
+    "@type": "getFileMime",
+    "@extra": null,
+    "file_name": "Telegram/uploads/cats.mp4"
 };
 
 const data = JSON.stringify(payload);
@@ -90,14 +92,14 @@ The `ClientReceive` API accepts a single param `data` of type `string` which is 
 
 ```javascript
 connection.on("ClientReceive", async data => {
-	var result = JSON.parse(data);
-	switch (result["@type"]) {
-		case "updateAuthorizationState":
-		break;
-	
-		case "updateNewChat":
-		break;
-	}
+    var result = JSON.parse(data);
+    switch (result["@type"]) {
+        case "updateAuthorizationState":
+        break;
+    
+        case "updateNewChat":
+        break;
+    }
 });
 ```
 
@@ -262,25 +264,25 @@ The example below shows how to send the two uploaded files above as photos in tw
 ```javascript
 // first photo
 const payload1 = {
-	"@type": "sendMessage",
-	"@extra": null,
-	"chat_id": 123456789,
-	"input_message_content": {
-		"@type": "inputMessagePhoto",
-		"@extra": null,
-		"width": 500,
-		"height": 300,
-		"caption": {
-			"@type": "formattedText",
-			"@extra": null,
-			"text": "You can send a caption along with the Photo or just pass 'null' if you do not want a caption."
-		},
-		"photo": {
-			"@type": "inputFileLocal",
-			"@extra": null,
-			"path": "iwdruscu.jpg" // this is the fileId of the UploadedFile
-		}
-	}
+    "@type": "sendMessage",
+    "@extra": null,
+    "chat_id": 123456789,
+    "input_message_content": {
+        "@type": "inputMessagePhoto",
+        "@extra": null,
+        "width": 500,
+        "height": 300,
+        "caption": {
+            "@type": "formattedText",
+            "@extra": null,
+            "text": "You can send a caption along with the Photo or just pass 'null' if you do not want a caption."
+        },
+        "photo": {
+            "@type": "inputFileLocal",
+            "@extra": null,
+            "path": "iwdruscu.jpg" // this is the fileId of the UploadedFile
+        }
+    }
 };
 
 const data1 = JSON.stringify(payload1);
@@ -289,21 +291,21 @@ await connection.send("Send", data1);
 
 // second photo
 const payload2 = {
-	"@type": "sendMessage",
-	"@extra": null,
-	"chat_id": 123456789,
-	"input_message_content": {
-		"@type": "inputMessagePhoto",
-		"@extra": null,
-		"width": 400,
-		"height": 1000,
-		"caption": null,
-		"photo": {
-			"@type": "inputFileLocal",
-			"@extra": null,
-			"path": "w22k2pez.jpg" // this is the fileId of the UploadedFile
-		}
-	}
+    "@type": "sendMessage",
+    "@extra": null,
+    "chat_id": 123456789,
+    "input_message_content": {
+        "@type": "inputMessagePhoto",
+        "@extra": null,
+        "width": 400,
+        "height": 1000,
+        "caption": null,
+        "photo": {
+            "@type": "inputFileLocal",
+            "@extra": null,
+            "path": "w22k2pez.jpg" // this is the fileId of the UploadedFile
+        }
+    }
 };
 
 const data2 = JSON.stringify(payload2);
@@ -333,6 +335,172 @@ await connection.send("Send", data2);
 		</td>
 	</tr>
 </table>
+
+## Sample Code
+Below is a short program on sending and receiving a text messages The flow of the program is marked with a comment and number to indicate the step-by-step taken by the program, eg: `// Flow Step #01`.
+```javascript
+const telegramPhoneNumber = "+60123456789"; // Enter your Telegram phone number with + prefix, eg: +60123456789
+
+// It's recommended to use a different Telegram account on another device to send you a message first so the chat will appear at the top.
+const nameOfTelegramAccount = "John Doe"; // The name of the Telegram account that sent you a message just now. It's usually in the format of "{FirstName} {LastName}"
+
+const sampleTextMessage = "Hello World"; // Test message to send.
+
+// Flow Step #01
+const connection = new window.signalR.HubConnectionBuilder()
+    .withUrl("https://telegram.bytedash.com.my/signalr-telegram")
+    .configureLogging(signalR.LogLevel.Information)
+    .build();
+    
+
+let chatId; // this is to store the chat_id that we are interested in.
+
+connection.on("ClientReceive", async data => {
+    var result = JSON.parse(data);
+    switch (result["@type"]) {
+        case "updateAuthorizationState":
+            {
+                const authorizationType = result["authorization_state"]["@type"];
+                switch (authorizationType) {
+                    case "authorizationStateWaitTdlibParameters": // Flow Step #03
+                        {
+                            const payload = {
+                                "@type": "setTdlibParameters",
+                                "api_id": 94575,
+                                "api_hash": "a3406de8d171bb422bb6ddf3bbd800e2",
+                                "device_model": "Web",
+                                "system_language_code": "en",
+                                "application_version": "1.0.0"
+                            };
+                            
+                               const data = JSON.stringify(payload);
+                            await connection.send("Send", data);
+                        }
+                        break;
+    
+                    case "authorizationStateWaitPhoneNumber": // Flow Step #04 - If you have successfully authenticated previously, this step will be skipped
+                        {
+                            const payload = {
+                                "@type": "setAuthenticationPhoneNumber",
+                                "phone_number": telegramPhoneNumber
+                            };
+                            
+                            const data = JSON.stringify(payload);
+                            await connection.send("Send", data);
+                        }
+                        break;
+    
+                    case "authorizationStateWaitCode": // Flow Step #05 - If you have successfully authenticated previously, this step will be skipped
+                        {
+                            let authorizationCode = "12345"; // Enter the authorization code you received on your Telegram account.
+
+                            const payload = {
+                                "@type": "checkAuthenticationCode",
+                                "code": authorizationCode
+                            };
+
+                            const data = JSON.stringify(payload);
+                            await connection.send("Send", data);
+                        }
+                        break;
+
+                    case "authorizationStateReady": // Flow Step #06 - This indicates that the application has passed authentication and ready for use.
+                        {
+                            // Let's retrieve a list of existing chats.
+                            
+                            console.log("Application is ready. Retrieving chat list. This might take a while.");
+                            
+                            const payload = {
+                                "@type": "loadChats",
+                                "limit": 10
+                            };
+                            
+                            const data = JSON.stringify(payload);
+                            await connection.send("Send", data);
+                        }
+                        break;
+                  }
+              }
+            break;
+    
+        case "updateNewChat": // Flow Step #07
+            {
+                // Here is to receive the response of "loadChats" sent above.
+                // If you have 10 chats, this part of the code will be called 10 times, so we need to only filter the chat that we're interested in.
+                // Depending on how big your chat list is, it might take quite some time before reaching here. In the mean time, it might appear to be not doing anything.
+                
+                console.log("Receiving chat.");
+                
+                const chat = result.chat;
+                
+                if (chat.title == nameOfTelegramAccount) { // only do something if it's the chat that we want.
+                    chatId = chat.id; // save the Chat ID for later use.
+                    
+                    // Now try sending a text message with the content "Hello World" to this chat
+                    
+                    console.log("Sending test text message.");
+                    
+                    const payload = {
+                        "@type": "sendMessage",
+                        "@extra": null,
+                        "chat_id": chatId,
+                        "input_message_content": {
+                            "@type": "inputMessageText",
+                            "@extra": null,
+                            "text": {
+                                "@type": "formattedText",
+                                "@extra": null,
+                                "text": sampleTextMessage
+                            }
+                        }
+                    };
+                    
+                    const data = JSON.stringify(payload);
+                    await connection.send("Send", data);
+                    
+                    // The other Telegram account would receive the text message.
+                    
+                    // Flow Step #08
+                    // Now, send a text message using the other Telegram account to this account.
+                }
+            }
+            break;
+            
+        case "updateNewMessage": // Flow Step #09
+            {
+                // Here is where you will receive messages.
+                // Here will be called twice. The first one for the message that you sent out (outgoing message).
+                // The second time is when the other Telegram account sends you a message (incoming message).
+                
+                console.log("Receiving text message.");
+                
+                const message = result.message;
+                
+                if (message["chat_id"] == chatId) { // only interested in the messages of the chatId we saved.
+                    console.log(message);
+                }
+            }
+            break;
+            
+        case "error":
+            {
+                // In the event of error.
+                console.error(result);
+            }
+            break;
+    }
+});
+
+// Flow Step #02
+await connection.start(); // connect to the Hub
+
+const accountName = telegramPhoneNumber;
+await connection.invoke("Init", accountName);
+
+
+// Flow Step #10 - run the uncommented code below to stop and dispose the connection.
+//await connection.stop(); // close the connection to the Hub
+```
 
 ## Important Notes
 
